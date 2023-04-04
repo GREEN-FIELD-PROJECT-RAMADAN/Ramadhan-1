@@ -1,0 +1,75 @@
+const express = require('express');
+const axios = require('axios');
+const mongoose = require('mongoose');
+
+const app = express();
+
+const hadithApiBaseUrl = 'https://api.sunnah.com/v1/hadiths/';
+
+// MongoDB connection string
+const mongoUrl = 'mongodb://localhost:27017/mydatabase';
+
+// Connect to MongoDB using Mongoose
+mongoose.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('MongoDB connected');
+}).catch((error) => {
+  console.error('MongoDB connection error:', error.message);
+});
+
+// Define the Hadith schema using Mongoose
+const hadithSchema = new mongoose.Schema({
+  hadithNumber: Number,
+chapterNumber: Number,
+  hadithArabic: String,
+  writerName: String,
+  grades: [
+    {
+      narrator: String,
+      grading: String,
+    },
+  ],
+});
+
+const Hadith = mongoose.model('Hadith', hadithSchema);
+
+// Route handler to fetch and save a Hadith
+app.get('/hadith/:collectionName/:hadithNumber', async (req, res) => {
+  const { collectionName, hadithNumber } = req.params;
+
+  try {
+    const response = await axios.get(`${hadithApiBaseUrl}${collectionName}/${hadithNumber}`, {
+      headers: { 'x-api-key': '$2y$10$9I7clzI9Pl2BUbIdWa2hOa1SpAdjYVmWVhMDm7rJPE8MRSyu68y' }, // Replace with your actual API key
+    });
+
+    const hadithData = response.data.data[0];
+
+    const hadith = new Hadith({
+      hadithNumber: hadithData.hadith_number,
+      collectionName: hadithData.collection.name,
+      bookNumber: hadithData.book_number,
+      chapterNumber: hadithData.chapter_number,
+      hadithText: hadithData.hadith_text,
+      narrator: hadithData.narrator,
+      reference: hadithData.reference,
+      grades: hadithData.grades.map((grade) => ({
+        narrator: grade.narrator,
+        grading: grade.grade,
+      })),
+    });
+
+    await hadith.save();
+
+    res.status(200).json({ message: `Hadith ${hadithNumber} saved to ${collectionName} collection.` });
+  } catch (error) {
+    console.error(`Error fetching or saving Hadith ${hadithNumber}:`, error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
