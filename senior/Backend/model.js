@@ -2,17 +2,15 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 
 const apiOneSchema = new mongoose.Schema({
-    city: String,
-    date: Date,
-    times: {
-        Fajr: String,
-        Sunrise : String,
-        Dhuhr: String,
-        Asr: String,
-        Maghrib: String,
-        Isha: String,
-        Imsak:String,
-    }
+  city: String,
+  date: String,
+      Fajr: String,
+      Sunrise : String,
+      Dhuhr: String,
+      Asr: String,
+      Maghrib: String,
+      Isha: String,
+      Imsak:String,
 
   });
   

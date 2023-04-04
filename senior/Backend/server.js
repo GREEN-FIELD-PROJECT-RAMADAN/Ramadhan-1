@@ -17,23 +17,43 @@ mongoose.connect('mongodb://127.0.0.1:27017/ramadhan').then(()=>console.log('CON
 
 
 // Prayer time API
-app.get('/api/prayerTime', (req, res) => {
-  const url = 'https://api.aladhan.com/v1/hijriCalendarByAddress/1444/9?address=Tunisia';
-  axios.get(url)
-    .then(response => {
-        for(let i=0 ;i<response.data.data.length;i++){
-      console.log(response.data.data[i].timings);
-    console.log(response.data.data[i].date.readable);
+
+app.post('/api/prayerTime', (req, res) => {
+axios.get('https://api.aladhan.com/v1/hijriCalendarByAddress/1444/9?address=Tunisia')
+  .then(response => {
+    const apiData = response.data.data;
+    for(let i=0;i<apiData.length;i++){
+      const newPrayer = new Prayer({
+      city: apiData[i].meta.timezone,
+      date: apiData[i].date.readable,
+      
+      Fajr :apiData[i].timings.Fajr ,
+      Sunrise :apiData[i].timings.Sunrise ,
+      Dhuhr : apiData[i].timings.Dhuhr,
+      Asr:apiData[i].timings.Asr ,
+      Maghrib:apiData[i].timings.Maghrib ,
+      Isha: apiData[i].timings.Isha ,
+      Imsak: apiData[i].timings.Imsak
+      
     
-        }
-        console.log(response.data.data[0].meta.timezone);
-        res.status(200).send('done');
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).send('Error getting prayer times');
     });
-});
+  
+    newPrayer.save() }
+  res.status(200).json('done')})
+  .catch(error => 
+    console.error(error));
+  })
+
+  app.get('/api/prayerTime', async (req, res) => {
+ 
+    try {
+      const prayers = await Prayer.find()
+      res.json(prayers)
+    } catch (err) {
+      res.status(500).send(err)
+    }
+  })
+
 
 // Halal food API
 app.get('/api/halalfood', async (req, res) => {
