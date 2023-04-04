@@ -49,13 +49,18 @@ app.get('/api/halalfood', async (req, res) => {
       res.status(200)
     })
 
+
 // Hadith API
+
+
+
 app.get('/api/azkarAdhan', (req, res) => {
 
   const url = 'https://www.hadithapi.com/api/hadiths/?apiKey=$2y$10$9I7clzI9Pl2BUbIdWa2hOa1SpAdjYVmWVhMDm7rJPE8MRSyu68y';
   axios.get(url)
     .then(response => {
     
+
       for(let i=0 ;i<response.data.hadiths.data.length;i++){
         console.log(response.data.hadiths.data[i].hadithArabic)
         console.log(response.data.hadiths.data[i].englishNarrator)
@@ -80,6 +85,7 @@ app.get('/api/azkarAdhan', (req, res) => {
       });
       
       res.status(200).send('Data saved to database');
+
       
     })
     .catch(error => {
@@ -87,6 +93,7 @@ app.get('/api/azkarAdhan', (req, res) => {
       res.status(500).send('Error getting azkar and adhan');
     });
 });
+
 // Zakat calculator API
 app.get('/api/zakatCalculator', (req, res) => {
   const url = 'https://api.aladhan.com/v1/calendarByCity?city=cairo&country=egypt&method=2';
