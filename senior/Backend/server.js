@@ -9,7 +9,7 @@ app.use(urlencoded({extended:true}))
 app.use(express.json())
 app.use(cors());
 
-mongoose.connect('mongodb://127.0.0.1:27017/Ramadhan').then(()=>console.log('CONNECTED TO DB'))
+mongoose.connect('mongodb://127.0.0.1:27017/ramadhan').then(()=>console.log('CONNECTED TO DB'))
 .catch(console.error)
 
 
@@ -69,14 +69,43 @@ app.get('/api/halalfood', async (req, res) => {
       res.status(200)
     })
 
-// Azkar and Adhan API
+
+// Hadith API
+
+
+
 app.get('/api/azkarAdhan', (req, res) => {
 
   const url = 'https://www.hadithapi.com/api/hadiths/?apiKey=$2y$10$9I7clzI9Pl2BUbIdWa2hOa1SpAdjYVmWVhMDm7rJPE8MRSyu68y';
   axios.get(url)
     .then(response => {
     
-      console.log(response.data.hadiths.data);
+
+      for(let i=0 ;i<response.data.hadiths.data.length;i++){
+        console.log(response.data.hadiths.data[i].hadithArabic)
+        console.log(response.data.hadiths.data[i].englishNarrator)
+        console.log(response.data.hadiths.data[i].book.bookName)
+        ;}
+        
+      
+      const hadithData = response.data.hadiths.data;
+      
+      // Create a new instance of the Hadith model for each item in the response data
+      hadithData.forEach(data => {
+        const hadith = new Hadith({
+          hadith: data.hadithArabic,
+          narrator:data.englishNarrator,
+          book: data.book.bookName
+        });
+        
+        // Save the instance to the database
+        hadith.save()
+          .then(() => console.log('Data saved to database'))
+          .catch(error => console.log(error));
+      });
+      
+      res.status(200).send('Data saved to database');
+
       
     })
     .catch(error => {
