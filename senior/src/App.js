@@ -4,6 +4,7 @@ import Navbar from './component/Navbar';
 import Praylist from './component/Praylist';
 import Zaket from './component/Zaket';
 import Recipe from './component/Recipe';
+import Hadith from './component/Hadith';
 
 function App() {
     return (
@@ -26,15 +27,15 @@ function App() {
             </React.Fragment>
           }
         />
-        {/* <Route
+       <Route
           path="/hadith"
           element={
             <React.Fragment>
               <Navbar />
-              <Hadith />
+              <Hadith/>
             </React.Fragment>
           }
-        /> */}
+        />
         <Route
           path="/recipe"
           element={

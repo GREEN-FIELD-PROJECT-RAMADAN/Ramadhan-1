@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+
+  
   return (
     <div>
       <nav className="navbar navbar-expand-xxl navbar-light fixed-top">
@@ -29,12 +31,11 @@ const Navbar = () => {
                 {/* linkedd to Zaket calucl root  */}
                 <Link className="nav-link" to="/zaket">Zaket</Link>
               </li>
-              {/* linkedd to Hadith root still thing how it will looks like xD */}
+              {/* linkedd to Hadith root  */}
               <li className="nav-item">
                 <Link className="nav-link" to="/Hadith">Hadith</Link>
               </li>
-              
-            </ul>
+          </ul>
             {/* search input we may use */}
             <form className="d-flex" role="search">
               <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />

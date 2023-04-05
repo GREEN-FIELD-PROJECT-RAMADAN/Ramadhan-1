@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 
+
 const Recipe = () => {
   const [Food,setFood]=useState([])
   useEffect(()=>{
@@ -11,7 +12,7 @@ const Recipe = () => {
   console.log(Food);
   return (
     <div>
-       
+      
     </div>
   )
 }
