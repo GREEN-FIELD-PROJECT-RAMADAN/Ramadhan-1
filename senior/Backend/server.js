@@ -18,7 +18,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/ramadhan').then(() => console.log('C
 
 // Prayer time API
 
-app.post('/api/prayerTime', (req, res) => {
+app.post('/ramadhan/prayerTime', (req, res) => {
   axios.get('https://api.aladhan.com/v1/hijriCalendarByAddress/1444/9?address=Tunisia')
     .then(response => {
       const apiData = response.data.data;
@@ -46,7 +46,7 @@ app.post('/api/prayerTime', (req, res) => {
       console.error(error));
 })
 
-app.get('/api/prayerTime', async (req, res) => {
+app.get('/ramadhan/prayerTime', async (req, res) => {
 
   try {
     const prayers = await Prayer.find()
@@ -58,7 +58,7 @@ app.get('/api/prayerTime', async (req, res) => {
 
 
 // Halal food API
-app.get('/api/halalfood', async (req, res) => {
+app.get('/ramadhan/halalfood', async (req, res) => {
 
   axios.get('https://api.spoonacular.com/recipes/search', {
     params: {
@@ -72,8 +72,8 @@ app.get('/api/halalfood', async (req, res) => {
 })
 
 
-// Hadith API
-app.get('/api/azkarAdhan2', async (req, res) => {
+// Hadith API after save
+app.get('/ramadhan/Hadith', async (req, res) => {
   try {
     const Hadithes = await Hadith.find()
     res.json(Hadithes)
@@ -83,7 +83,7 @@ app.get('/api/azkarAdhan2', async (req, res) => {
 })
 
 
-app.get('/api/azkarAdhan', (req, res) => {
+app.get('/ramadhan/azkarAdhan', (req, res) => {
 
   const url = 'https://www.hadithapi.com/api/hadiths/?apiKey=$2y$10$9I7clzI9Pl2BUbIdWa2hOa1SpAdjYVmWVhMDm7rJPE8MRSyu68y';
   axios.get(url)
@@ -120,10 +120,122 @@ app.get('/api/azkarAdhan', (req, res) => {
     });
 });
 
-// Zakat calculator API
+app.post('/ramadhan/admin/prayerTime', async (req, res) => {
+  try {
+    const newPrayer = new Prayer(req.body);
+    await newPrayer.save();
+    res.status(201).json(newPrayer);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Read
+app.get('/ramadhan/admin/prayerTime', async (req, res) => {
+  try {
+    const prayers = await Prayer.find();
+    res.status(200).json(prayers);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Update
+app.put('/ramadhan/admin/prayerTime/:id', async (req, res) => {
+  try {
+    const prayer = await Prayer.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(prayer);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Delete
+app.delete('/ramadhan/admin/prayerTime/:id', async (req, res) => {
+  try {
+    await Prayer.findByIdAndDelete(req.params.id);
+    res.status(204).send('Deleted');
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// CRUD for Hadith API
+// Create
+app.post('/ramadhan/admin/hadith', async (req, res) => {
+  try {
+    const newHadith = new Hadith(req.body);
+    await newHadith.save();
+    res.status(201).json(newHadith);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Read
+app.get('/ramadhan/admin/hadith', async (req, res) => {
+  try {
+    const hadiths = await Hadith.find();
+    res.status(200).json(hadiths);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Update
+app.put('/ramadhan/admin/hadith/:id', async (req, res) => {
+  try {
+    const hadith = await Hadith.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(hadith);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Delete
+app.delete('/ramadhan/admin/hadith/:id', async (req, res) => {
+  try {
+    await Hadith.findByIdAndDelete(req.params.id);
+    res.status(204).send('Deleted');
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// CRUD for Recipes API
+// Create
+app.post('/ramadhan/admin/recipes', async (req, res) => {
+  try {
+    const newRecipe = new Recipes(req.body);
+    await newRecipe.save();
+    res.status(201).json(newRecipe);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Read
+app.get('/ramadhan/admin/recipes', async (req, res) => {
+  try {
+    const recipes = await Recipes.find();
+    res.status(200).json(recipes);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Update
+app.put('/ramadhan/admin/recipes/:id', async (req, res) => {
+  try {
+    const recipe = await Recipes.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(recipe);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+// Delete
+app.delete('/ramadhan/admin/recipes/:id', async (req, res) => {
+  try {
+    await Recipes.findByIdAndDelete(req.params.id);
+    res.status(204).send('Deleted');
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+//************* */
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3005;
 app.listen(PORT, () => {
   console.log(`Server is
  running on port ${PORT}`);

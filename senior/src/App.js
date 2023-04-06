@@ -5,6 +5,9 @@ import Praylist from './component/Praylist';
 import Zaket from './component/Zaket';
 import Recipe from './component/Recipe';
 import Hadith from './component/Hadith';
+import Admin from './component/Admin';
+
+
 
 function App() {
     return (
@@ -14,7 +17,9 @@ function App() {
           element={
             <React.Fragment>
               <Navbar/>
+              <div className="container mt-3 d-flex justify-content-center">
               <Praylist />
+              </div>
             </React.Fragment>
           }
         />
@@ -42,6 +47,15 @@ function App() {
             <React.Fragment>
               <Navbar />
               <Recipe />
+            </React.Fragment>
+          }
+        />
+          <Route
+          path="/Admin"
+          element={
+            <React.Fragment>
+              <Navbar />
+              <Admin/>
             </React.Fragment>
           }
         />

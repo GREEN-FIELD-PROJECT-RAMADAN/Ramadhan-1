@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
-  
+
   return (
     <div>
-      <nav className="navbar navbar-expand-xxl navbar-light fixed-top">
+      <nav className="navbar navbar-expand-xxl navbar-light fixed-top bg-Secondary shadow-lg p-3 mb-5 .bg-transparent rounded">
         <div className="container-xxl">
           <Link className="navbar-brand" to="/">Ramadhan</Link>
           <button
@@ -25,7 +25,7 @@ const Navbar = () => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 {/* linkedd to recipe food root  */}
-              <Link className="nav-link" to="/recipe">Recipe</Link>
+                <Link className="nav-link" to="/recipe">Recipe</Link>
               </li>
               <li className="nav-item">
                 {/* linkedd to Zaket calucl root  */}
@@ -35,12 +35,11 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/Hadith">Hadith</Link>
               </li>
-          </ul>
+            </ul>
             {/* search input we may use */}
-            <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-              <button className="btn btn-outline-success" type="submit">Search</button>
-            </form>
+           
+              <Link className="nav-link" to="/Admin">Login as Admin</Link>
+            
           </div>
         </div>
       </nav>

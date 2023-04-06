@@ -4,26 +4,26 @@ import axios from 'axios'
 const Praylist = () => {
     const [prayer, setPrayer] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/api/prayerTime')
+        axios.get('http://localhost:3005/ramadhan/prayerTime')
           .then(({ data }) =>
             setPrayer(data))
           .catch((err) => console.log(err))
       }, [])
     return (
-        <div className="container" style={{marginBottom:"25%"}}>
-            <table class="table table-hover">
+        <div className="table d-flex p-5" >
+            <table class="table table-light  table-hover ">
                 <thead>
                  <tr className="text-center"><th colspan="8" class="text-center display-5" >بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</th></tr>
                     <tr className="text-center"> <th colspan="8" class="text-center h1 mb-5">Prayer Times</th> </tr>
                   <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Fajr</th>
+                        <th scope="col">Imsak</th>
                         <th scope="col">Sunrise</th>
                         <th scope="col">Dhuhr</th>
                         <th scope="col">Asr</th>
                         <th scope="col">Maghrib</th>
                         <th scope="col">Isha</th>
-                        <th scope="col">Imsak</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +45,7 @@ const Praylist = () => {
                 </tbody>
             </table>
         </div>
+       
     )
 }
 
